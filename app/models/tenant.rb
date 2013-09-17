@@ -8,18 +8,6 @@ class Tenant < ActiveRecord::Base
 
   after_create :create_project
 
-  def create_project2
-    Dir.chdir('/www') do
-      system "rails new #{name} -T"
-    end
-    nginx_conf_str = File.open('/opt/nginx/conf/nginx.conf', 'r+').read
-    pos = (nginx_conf_str =~ /http {\n/) + "http {\n".length - 1
-    File.open('/opt/nginx/conf/nginx.conf', 'r+') do |f|
-      f.seek pos
-      f.write tenant_config
-    end
-  end
-
   def create_project
     Dir.chdir('/www') do
       system "rails new #{name} -T"
