@@ -9,17 +9,17 @@ class Tenant < ActiveRecord::Base
   after_create :create_project
 
   def create_project
-    Dir.chdir('/www') do
-      system "git clone fllcasts #{name}"
-      Dir.chdir("/www/#{name}") do
-        File.open("/www/#{name}/config/database.yml", "w") do |file| # w -> overwrite
+    Dir.chdir('/var/www-data') do
+      system "git clone blog #{name}"
+      Dir.chdir("/var/www-data/#{name}") do
+        File.open("/var/www-data/#{name}/config/database.yml", "w") do |file| # w -> overwrite
           file.write database_config name
         end
       end
     end
-    File.symlink("/www/#{name}/public", "/www/projo/public/#{name}")
+    File.symlink("/var/www-data/#{name}/public", "/var/www-data/projo/public/#{name}")
     set_nginx_config
-    system "/www/projo/lib/deploy.sh #{name}"
+    system "/var/www-data/projo/lib/deploy.sh #{name}"
   end
 
   private
@@ -34,10 +34,10 @@ class Tenant < ActiveRecord::Base
   def tenant_config
     ["",
      "\tserver {",
-     "\t\tlisten 80;",
+     "\t\tlisten 8080;",
      "\t\tserver_name #{name}.dobri.robopartans.com;",
      "\t\tpassenger_enabled on;",
-     "\t\troot /www/#{name}/public;",
+     "\t\troot /var/www-data/#{name}/public;",
      "\t}",
      "}"].join "\n"
   end
