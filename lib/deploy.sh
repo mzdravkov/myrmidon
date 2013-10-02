@@ -1,8 +1,8 @@
 #! /bin/bash
 
-#rm Gemfile.lock
-bundle install > bundle.txt
-RAILS_ENV=production bundle exec rake db:create > db_create.txt
-RAILS_ENV=production bundle exec rake db:migrate > db_migrate.txt
+cd /var/www-data/$1
+bundle install > /tmp/bundle.txt
+RAILS_ENV=production bundle exec rake db:create > /tmp/db_c.txt
+RAILS_ENV=production bundle exec rake db:migrate > /tmp/db_m.txt
 #RAILS_ENV=production bundle exec rake assets:precompile
-#rails g rename:app_to $1 > rename.txt
+#rails g rename:app_to $1
