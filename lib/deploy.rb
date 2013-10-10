@@ -29,22 +29,29 @@ def database_config database
 end
 
 def create_db
-  `RAILS_ENV=production rake db:create > /var/www-data/db.log`
-  `RAILS_ENV=production rake db:migrate >> /var/www-data/db.log`
+  `RAILS_ENV=production bundle exec rake db:create > /var/www-data/db.log`
+  `RAILS_ENV=production bundle exec rake db:migrate >> /var/www-data/db.log`
+end
+
+def figaro_configs
+  'SECRET_KEY: ' + `rake secret`
 end
 
 name = ARGV[0]
 
 Dir.chdir('/var/www-data') do
   `which ruby > ruby.log`
-  `git clone blog #{name}`
+  `git clone fllcasts #{name}`
   Dir.chdir("/var/www-data/#{name}") do
     File.open("/var/www-data/#{name}/config/database.yml", "w") do |file| # w -> overwrite
       file.write database_config(name)
     end
-    `bundle > /var/www-data/bundle.log`
+    File.open("/var/www-data/#{name}/config/application.yml", "w") do |file| # w -> overwrite
+      file.write figaro_configs
+    end
+    `bundle install > /var/www-data/bundle.log`
     create_db
-    `RAILS_ENV=production bundle exec rake assets:precompile > precompile.log`
+    `RAILS_ENV=production bundle exec rake assets:precompile > /var/www-data/precompile.log`
   end
 end
 File.symlink("/var/www-data/#{name}/public", "/var/www-data/projo/public/#{name}")
