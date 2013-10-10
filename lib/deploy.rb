@@ -57,4 +57,3 @@ end
 File.symlink("/var/www-data/#{name}/public", "/var/www-data/projo/public/#{name}")
 set_nginx_config(name)
 `/opt/nginx/sbin/nginx -s reload`
-
