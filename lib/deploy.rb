@@ -1,4 +1,4 @@
-#! /home/dobri/.rvm/rubies/ruby-1.9.3-p448/bin/ruby
+#! /home/www-data/.rvm/rubies/ruby-1.9.3-p448/bin/ruby
 
 def set_nginx_config name
   file = File.open('/opt/nginx/conf/nginx.conf', 'r+') # r+ -> read/write from begginin of a file
@@ -29,8 +29,8 @@ def database_config database
 end
 
 def create_db
-  `RAILS_ENV=production bundle exec rake db:create > /var/www-data/db.log`
-  `RAILS_ENV=production bundle exec rake db:migrate >> /var/www-data/db.log`
+  `RAILS_ENV=production bundle exec rake db:create > /var/www-data/dbc.log`
+  `RAILS_ENV=production bundle exec rake db:migrate > /var/www-data/dbm.log`
 end
 
 def figaro_configs
@@ -40,7 +40,7 @@ end
 name = ARGV[0]
 
 Dir.chdir('/var/www-data') do
-  `which ruby > ruby.log`
+  `whoami > /var/www-data/who.log`
   `git clone fllcasts #{name}`
   Dir.chdir("/var/www-data/#{name}") do
     File.open("/var/www-data/#{name}/config/database.yml", "w") do |file| # w -> overwrite
@@ -51,7 +51,7 @@ Dir.chdir('/var/www-data') do
     end
     `bundle install > /var/www-data/bundle.log`
     create_db
-    `RAILS_ENV=production bundle exec rake assets:precompile > /var/www-data/precompile.log`
+    ##`RAILS_ENV=production bundle exec rake assets:precompile > /var/www-data/precompile.log`
   end
 end
 File.symlink("/var/www-data/#{name}/public", "/var/www-data/projo/public/#{name}")

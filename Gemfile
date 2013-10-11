@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+ruby "1.9.3"
 gem 'rails', '3.2.14'
 
 # Bundle edge Rails instead:
@@ -8,6 +9,12 @@ gem 'rails', '3.2.14'
 gem 'mysql2'
 gem 'devise'
 gem 'therubyracer'
+
+# despair
+
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'saasy_simple'
 
 
 group :development do
