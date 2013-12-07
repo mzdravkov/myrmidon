@@ -1,5 +1,3 @@
-#! /home/dobri/.rvm/rubies/ruby-1.9.3-p448/bin/ruby
-
 def set_nginx_config name
   file = File.open('/opt/nginx/conf/nginx.conf', 'r+') # r+ -> read/write from begginin of a file
   file.seek(-2, IO::SEEK_END)

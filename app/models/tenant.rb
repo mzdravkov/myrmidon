@@ -9,6 +9,6 @@ class Tenant < ActiveRecord::Base
   after_create :create_project
 
   def create_project
-    system "/var/www-data/projo/lib/deploy.rb #{name}"
+    system "./lib/deploy.rb #{name}"
   end
 end

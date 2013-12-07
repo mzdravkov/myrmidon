@@ -1,0 +1,13 @@
+nginx_config_file: /etc/nginx/nginx.conf
+app_nginx_config:
+  listen: 8080
+  server_name: <name>.misho.robopartans.com
+  root: var/www-data/<name>/public
+app_database_config:
+  adapter: mysql2
+  username: root
+  password: robopar #TODO
+  database: <name>
+  pool: 5
+  timeout: 5000
+app_repo: https://github.com/mzdravkov/videatra
