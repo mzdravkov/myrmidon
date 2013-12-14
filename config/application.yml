@@ -1,6 +1,11 @@
-nginx_config_file: /etc/nginx/nginx.conf
+nginx_config_file: /opt/nginx/conf/nginx.conf
+nginx_bin: /opt/nginx/sbin/nginx
+server_ip: 94.73.33.41
+jails_dir: /usr/jails
+
+# currently deprecated
 app_nginx_config:
-  listen: 8080
+  listen: 80
   server_name: <name>.misho.robopartans.com
   root: var/www-data/<name>/public
 app_database_config:
