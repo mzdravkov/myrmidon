@@ -23,13 +23,13 @@ module Nginx
 
     def server_block options
       "\n\tserver {\n\t\t" +
-        options.map { |opt, value| opt.to_s + ': ' + value.to_s + ';' }.join("\n\t\t") +
+        options.map { |opt, value| opt.to_s + ' ' + value.to_s + ';' }.join("\n\t\t") +
       "\n\t}\n"
     end
 
     def location_block path, options
       "\n\t\tlocation ~ ^/#{path}(/.*|$) {\n\t\t\t" +
-        options.map { |opt, value| opt.to_s + ': ' + value.to_s + ';' }.join("\n\t\t\t") +
+        options.map { |opt, value| opt.to_s + ' ' + value.to_s + ';' }.join("\n\t\t\t") +
       "\n\t\t}\n"
     end
   end
