@@ -13,8 +13,21 @@ module Nginx
 
     private
 
+    #pass string after the opening curly and you will receive the index of the closing or nil
+    def find_matching_curly string
+      balance = 1
+      for i in 0...string.length do
+        balance += 1 if string[i] == '{'
+        balance -= 1 if string[i] == '}'
+        return i if balance == 0
+      end
+      nil
+    end
+
     def import_to_conf match, string
-      config = match.pre_match + match.to_s + string + match.post_match
+      #config = match.pre_match + match.to_s + string + match.post_match
+      closing_curly_index = find_matching_curly(match.post_match)
+      config = match.pre_match + match.to_s + match.post_match[0...closing_curly_index] + string + match.post_match[closing_curly_index...match.post_match.length]
 
       File.open ENV['nginx_config_file'], 'w' do |new_conf|
         new_conf.print config
