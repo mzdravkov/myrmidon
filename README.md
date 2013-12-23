@@ -1,30 +1,34 @@
-#Projo
+#Myrmidon
 
-"Projo" is just a working name - most likely it will be changed.
 
 ###About
-Projo is a rails app that spawns it's brave minions (rack apps) and runs them with nginx and passanger!
-Basically, Projo is the deploying part of a CMS system me and friend of mine (d0ivanov) are writting as our thesis project.
+Myrmidon is a rails application that spawns it's brave minions (rack applications) and runs them with nginx and passanger!  
+Basically, Myrmidon is a software platform for easy building of Content Managment Systems (CMS), like Wordpress, Tumblr and company  
+The main Idea is that if building a CMS is easy, people will create a lot of Domain Specific Content Managment Systems. This will give to people the oppurtunity to create websites with tools created exactly for their website's domain. For example, if you want to create a website for video sharing, CMS that is created for making exactly that kind of websites will be a better fit, then just go with Wordpress or whatever else you like.
 
-The goals of projo are:
+The goals of Myrmidon are:
 
-* easy deploying of rack applications (projo clones from one "source" application for each "tenant")
-* easy configuration of the deploying process (projo uses nginx)
+* easy deploying of rack applications (Myrmidon clones from one "template" application for each "tenant")
+* easy configuration of the deploying process (Myrmidon uses nginx)
 * configuration of the "tenants"
 * managin plugins of the "tenants"
 
 Beware, here be dragons!
 
-* letting users write their own plugins, which are running on our host (unlike wordpress for example). This will be done using freeBSD jails, and other cool things.
-(in some point of time, projo may be ported to linux)
+* letting users write their own plugins, which are running on our host (unlike Wordpress for example). This will be done using freeBSD jails, and other cool things.
+(in some point of time, Myrmidon may be ported to linux)
 
+For template application can be used every rack application, but if the application follows few "conventions" (lime implementing a specific API for configurating the deployed application and API for managin plugins) it will be best. The first template application is being developped by d0ivanov [here](https://github.com/d0ivanov/videatra) and it is a video sharing application.
+
+####WARNING!
 Not really usable for the moment.
-But still it's awesome!
+But still, it's *awesome!*
 
 ### Install
 
-Projo is currently depending on FreeBSD jails, so for the moment it can only run in FreeBSD. At some point in time, there may be a Linux port.  
-It is being developed on FreeBSD 9.2, so this is the recommended version.
+Myrmidon is currently depending on FreeBSD jails, so for the moment it can only run in FreeBSD. At some point in time, there may be a Linux port.  
+It is being developed on FreeBSD 9.2, so this is the recommended version.  
+The guide is tested on brand new FreeBSD v9.2, so this should be all the dependencies.
 
 (This guide will install packages from source. You can install precompiled binaries for the dependencies, this way it will be faster.)
 
@@ -46,75 +50,44 @@ cd /usr/ports/ftp/curl
 make install clean  
 ```
 
-Install bash if you don't have it:  
-```console
-cd /usr/ports/shells/bash  
-make install clean  
-```
-
-###TODO:REMOVE THIS
 Install ruby:  
 ```console
 cd /usr/ports/lang/ruby19  
 make install clean  
 ```
-You will need sudo for installing rubies:  
+
+Install ruby-gems port:  
 ```console
-cd /usr/ports/security/sudo  
+cd /usr/ports/devel/ruby-gems  
 make install clean  
 ```
 
-Make user for rvm:  
+Install passenger gem, which we'll then use to install nginx:  
 ```console
-adduser  
-
-Username: rvm  
-Full name: Ruby Version Manager  
-Uid (Leave empty for default):  
-Login group [rvm]:  
-Login group is rvm. Invite rvm into other groups? []:  
-Login class [default]:  
-Shell (sh csh tcsh bash rbash nologin) [sh]: bash  
-Home directory [/home/rvm]:  
-Home directory permissions (Leave empty for default):  
-Use password-based authentication? [yes]: no  
-Lock out the account after creation? [no]: no  
-Username   : rvm  
-Password   :  
-Full Name  : Ruby Version Manager  
-Uid        : 1001  
-Class      :  
-Groups     : rvm  
-Home       : /home/rvm  
-Home Mode  :  
-Shell      : /usr/local/bin/bash  
-Locked     : no  
-OK? (yes/no): yes  
-adduser: INFO: Successfully added (rvm) to the user database.  
+gem install passenger  
 ```
 
+It is recommended to build the whole system inside one directory. This way will be easier to maintain it.  
+I like this approach, so it is the default:
 ```console
-su rvm  
+cd /  
+mkdir /myr  
 ```
+And everything for the platform will be kept inside _/myr/_. (for example we will have _/myr/nginx_ and _/myr/jails_)  
 
-Install RVM:  
+Install nginx:  
 ```console
-\curl -sSL https://get.rvm.io | bash -s stable  
+passenger-install-nginx-module  
+```
+You will be greeted with some message and you will have to hit enter, then the installer will ask you what to do:  
+```console
+1. Yes: download, compile and install Nginx for me. (recommended)  
+2. No: I wan to customize my Nginx installation. (for advanced users)  
+```
+Just choose 1 if you are not sure what to do.
 
-Load RVM in bash:  
 ```console
-echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bash_profile  
-echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bashrc  
-source ~/.bash_profile
+Where do you want to install Nginx to?
+Please specify a prefix directory [/opt/nginx]: /myr/nginx
 ```
-To check if everything with RVM is alrgiht:  
-```console
-type rvm | head -1
-```
-Should print 'rvm is a function'
-
-Install ruby
-```console
-rvm install 1.9.3
-```
-You can check it with 'ruby -v'
+Altought you can decide to put it elsewere, it is recommended to put nginx there.
