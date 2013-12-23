@@ -3,22 +3,22 @@
 
 ###About
 Myrmidon is a rails application that spawns it's brave minions (rack applications) and runs them with nginx and passanger!  
-Basically, Myrmidon is a software platform for easy building of Content Managment Systems (CMS), like Wordpress, Tumblr and company  
-The main Idea is that if building a CMS is easy, people will create a lot of Domain Specific Content Managment Systems. This will give to people the oppurtunity to create websites with tools created exactly for their website's domain. For example, if you want to create a website for video sharing, CMS that is created for making exactly that kind of websites will be a better fit, then just go with Wordpress or whatever else you like.
+Basically, Myrmidon is a software platform for easy building of Content Management Systems (CMS), like Wordpress, Tumblr and company.  
+The main Idea is that if building a CMS is easy, people will create a lot of Domain Specific Content Management Systems. This will give to people the oppurtunity to create websites with tools created exactly for their website's domain. For example, if you want to create a website for video sharing, CMS that is created for making exactly that kind of websites will be a better fit, than just go with Wordpress or whatever else you like.
 
 The goals of Myrmidon are:
 
 * easy deploying of rack applications (Myrmidon clones from one "template" application for each "tenant")
 * easy configuration of the deploying process (Myrmidon uses nginx)
 * configuration of the "tenants"
-* managin plugins of the "tenants"
+* managing plugins of the "tenants"
 
 Beware, here be dragons!
 
 * letting users write their own plugins, which are running on our host (unlike Wordpress for example). This will be done using freeBSD jails, and other cool things.
-(in some point of time, Myrmidon may be ported to linux)
+(at some point of time, Myrmidon may be ported to linux)
 
-For template application can be used every rack application, but if the application follows few "conventions" (lime implementing a specific API for configurating the deployed application and API for managin plugins) it will be best. The first template application is being developped by d0ivanov [here](https://github.com/d0ivanov/videatra) and it is a video sharing application.
+For template application can be used every rack application, but if the application follows few "conventions" (like implementing a specific API for configurating the deployed application and API for managing plugins) it will be best. The first template application is being developped by d0ivanov [here](https://github.com/d0ivanov/videatra) and it is a video sharing application.
 
 ####WARNING!
 Not really usable for the moment.
