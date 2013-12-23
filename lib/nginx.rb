@@ -6,7 +6,8 @@ module Nginx
       import_to_conf match, server_block(options)
     end
 
-    def add_location path, options # path without /
+	# path without /
+    def add_location path, options 
       match = File.read(ENV['nginx_config_file']).match(/server\s*{/)
       import_to_conf match, location_block(path, options)
     end
