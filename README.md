@@ -20,3 +20,29 @@ Beware, here be dragons!
 
 Not really usable for the moment.
 But still it's awesome!
+
+### Install
+
+Projo is currently depending on FreeBSD jails, so for the moment it can only run in FreeBSD. At some point in time, there may be a Linux port.  
+It is being developed on FreeBSD 9.2, so this is the recommended version.
+
+(This guide will install packages from source. You can install precompiled binaries for the dependencies, this way it will be faster.)
+
+First you will need ezjail:  
+```console
+cd /usr/ports/sysutils/ezjail  
+make install cleane
+```
+
+Install git:  
+```console
+cd /usr/ports/devel/git  
+make install clean
+```
+
+Install ruby:
+```console
+cd /usr/ports/lang/ruby19  
+make install clean
+```
+
