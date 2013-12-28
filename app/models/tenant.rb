@@ -9,6 +9,6 @@ class Tenant < ActiveRecord::Base
   after_create :create_project
 
   def create_project
-    `ruby ./lib/deploy.rb #{name}`
+    `ruby -e "require './lib/deploy.rb'; DeployStrategies::Docker.deploy '#{name}'"`
   end
 end

@@ -1,6 +1,6 @@
 #Myrmidon
 
-
+### THIS README IS COMPLETELY OUT OF DATE. I'LL FIX IT TOMMOROW, NOW I'M GOING TO SLEEP.
 ###About
 Myrmidon is a rails application that spawns it's brave minions (rack applications) and runs them with nginx and passanger!  
 Basically, Myrmidon is a software platform for easy building of Content Management Systems (CMS), like Wordpress, Tumblr and company.  
@@ -24,7 +24,7 @@ For template application can be used every rack application, but if the applicat
 Not really usable for the moment.
 But still, it's *awesome!*
 
-### Install
+## Install
 
 Myrmidon is currently depending on FreeBSD jails, so for the moment it can only run in FreeBSD. At some point in time, there may be a Linux port.  
 It is being developed on FreeBSD 9.2, so this is the recommended version.  
@@ -32,41 +32,41 @@ The guide is tested on brand new FreeBSD v9.2, so this should be all the depende
 
 (This guide will install packages from source. You can install precompiled binaries for the dependencies, this way it will be faster.)
 
-First you will need ezjail:  
+#####First you will need ezjail:  
 ```console
 cd /usr/ports/sysutils/ezjail  
 make install clean  
 ```
 
-Install git:  
+#####Install git:  
 ```console
 cd /usr/ports/devel/git  
 make install clean  
 ```
 
-Install curl:  
+#####Install curl:  
 ```console
 cd /usr/ports/ftp/curl  
 make install clean  
 ```
 
-Install ruby:  
+#####Install ruby:  
 ```console
 cd /usr/ports/lang/ruby19  
 make install clean  
 ```
 
-Install ruby-gems port:  
+#####Install ruby-gems port:  
 ```console
 cd /usr/ports/devel/ruby-gems  
 make install clean  
 ```
 
-Install passenger gem, which we'll then use to install nginx:  
+#####Install passenger gem, which we'll then use to install nginx:  
 ```console
 gem install passenger  
 ```
-
+#####Create the /myr directory, where everything will be placed:
 It is recommended to build the whole system inside one directory. This way will be easier to maintain it.  
 I like this approach, so it is the default:
 ```console
@@ -75,7 +75,7 @@ mkdir /myr
 ```
 And everything for the platform will be kept inside _/myr/_. (for example we will have _/myr/nginx_ and _/myr/jails_)  
 
-Install nginx:  
+#####Install nginx:  
 ```console
 passenger-install-nginx-module  
 ```
@@ -91,3 +91,31 @@ Where do you want to install Nginx to?
 Please specify a prefix directory [/opt/nginx]: /myr/nginx
 ```
 Altought you can decide to put it elsewere, it is recommended to put nginx there.
+
+## Configuring the platform
+
+#####ezjail:
+Add the following to /etc/rc.conf  
+```text
+ezjail_enable="YES"
+```
+
+Then create the ezjail configuration file  
+```console
+cd /usr/local/etc  
+cp ezjail.conf.sample ezjail.conf  
+```
+
+Open the config file (/usr/local/etc/ezjail.conf) and change
+```text
+# ezjail_jaildir=/usr/jails
+```
+to
+```text
+ezjail_jaildir=/myr/jails
+```
+(Note: we uncommented it and changed the path)
+
+```console
+ezjail-admin install
+```

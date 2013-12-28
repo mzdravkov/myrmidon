@@ -1,18 +1,42 @@
-nginx_config_file: /opt/nginx/conf/nginx.conf
-nginx_bin: /opt/nginx/sbin/nginx
-server_ip: 94.73.33.41
-jails_dir: /usr/jails
+# docker strategie specific
 
-# currently deprecated
-app_nginx_config:
-  listen: 80
-  server_name: <name>.misho.robopartans.com
-  root: var/www-data/<name>/public
-app_database_config:
-  adapter: mysql2
-  username: root
-  password: robopar #TODO
-  database: <name>
-  pool: 5
-  timeout: 5000
-app_repo: https://github.com/mzdravkov/videatra
+nginx_config_file: /myr/nginx/conf/nginx.conf
+nginx_bin: /myr/nginx/sbin/nginx
+server_ip: 94.73.33.41
+docker_image: fcat/rails-getting-started
+#myrmidon_user: myrmidon
+myrmidon_password: myrmidon
+
+# ruby strategie specific
+#nginx_config_file: /myr/nginx/conf/nginx.conf
+#nginx_bin: /myr/nginx/sbin/nginx
+#server_ip: 94.73.33.41
+#tenants_dir: /myr/tenants
+#app_repo: https://github.com/mzdravkov/videatra
+##########################
+
+# freeBSD jails specific
+##########################
+#nginx_config_file: /etc/nginx/nginx.conf
+#nginx_bin: /usr/sbin/nginx
+#server_ip: 94.73.33.41
+#jails_dir: /usr/jails
+##########################
+
+## currently deprecated
+##########################
+#app_nginx_config:
+#  listen: 80
+#  server_name: <name>.misho.robopartans.com
+#  root: var/www-data/<name>/public
+#app_database_config:
+#  adapter: mysql2
+#  username: root
+#  password: robopar #TODO
+#  database: <name>
+#  pool: 5
+#  timeout: 5000
+#nginx_config_file: /etc/nginx/nginx.conf
+#nginx_bin: /usr/sbin/nginx
+#server_ip: 94.73.33.41
+##########################
