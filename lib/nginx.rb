@@ -1,6 +1,6 @@
 require 'yaml'
 
-CONF = YAML.load(File.read('./config/application.yml'))
+CONF = YAML.load_file('./config/application.yml') unless defined? CONF
 
 module Nginx
   module Config

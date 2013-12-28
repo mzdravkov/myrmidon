@@ -11,4 +11,23 @@ class Tenant < ActiveRecord::Base
   def create_project
     `ruby -e "require './lib/deploy.rb'; DeployStrategies::Docker.deploy '#{name}'"`
   end
+
+  def configs
+    YAML.load_file(File.join(ENV['tenants_configs_dir'], name + '.yml'))
+  end
+
+  def update_configs changes
+    conf = configs
+    changes.each do |k, v|
+      if conf[k]['type'] == 'bool'
+        conf[k]['value'] = (v == 'true')
+      else
+        conf[k]['value'] = v
+      end
+    end
+    file = File.join(ENV['tenants_configs_dir'], name + '.yml')
+    File.open file, 'w' do |f|
+      f.print conf.to_yaml
+    end
+  end
 end

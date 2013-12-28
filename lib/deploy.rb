@@ -1,7 +1,8 @@
 require './lib/nginx.rb'
+require 'fileutils'
 require 'yaml'
 
-CONF = YAML.load(File.read('./config/application.yml'))
+CONF = YAML.load_file('./config/application.yml') unless defined? CONF
 
 module DeployStrategies
   module Docker
@@ -16,17 +17,47 @@ module DeployStrategies
       port
     end
 
-    def self.deploy name
-      `docker run -d -name #{name} -p #{port = find_free_port}:3000 #{CONF['docker_image']}`
-      location_options = {
-        'resolver'   => '8.8.8.8',
-        'proxy_pass' => "http://#{CONF['server_ip']}:#{port}/$1"
+    def self.docker_run_options name, port
+      docker_run_options = [
+        "-d",
+        "-name #{name}",
+        "-p #{port}:#{CONF['tenants_port']}",
+        "-v #{CONF['tenants_configs_dir']}:#{CONF['tenants_config_path']}:ro"
+      ]
+      docker_run_options += CONF['docker_options'] unless CONF['docker_options'].nil?
+      docker_run_options
+    end
+
+    def self.docker_run_arguments
+      docker_run_arguments = [CONF['docker_image']]
+      docker_run_arguments += CONF['container_entry_command'] unless CONF['container_entry_command'].nil?
+      docker_run_arguments
+    end
+
+    def self.location_options port
+      {
+        'proxy_pass' => "http://#{CONF['server_ip']}:#{port}/$1",
+        'resolver' => "#{CONF['nginx_location_resolver']}"
       }
+    end
+
+    def self.make_tenant_config name
+      FileUtils.cp CONF['tenants_default_config'], File.join(CONF['tenants_configs_dir'], name + '.yml')
+    end
+
+    def self.deploy name
+      port = find_free_port
+      opts = docker_run_options(name, port)
+      args = docker_run_arguments
+      make_tenant_config name
+      `docker run #{opts.join(' ')} #{args.join(' ')}`
+      location_options = location_options(port)
       Nginx::Config.add_location name, location_options
       `sudo #{CONF['nginx_bin']} -s reload`
     end
   end
 
+  #currently not working
   module FreeBSD_jails
     def self.deploy name
       `ezjail-admin create #{name} #{CONF['server_ip']}`
@@ -37,22 +68,6 @@ module DeployStrategies
         'passenger_enabled'  => 'on'
       }
       Nginx::Config.add_location name, location_options
-      `#{CONF['nginx_bin']} -s reload`
-    end
-  end
-
-  module Ruby
-    def self.deploy name
-      config = {
-        'passenger_base_uri' => '/' + name,
-        'alias'              => File.join(CONF['tenants_dir'], "#{name}/public$1"),
-        'passenger_app_root' => File.join(CONF['tenants_dir'], "#{name}"),
-        'passenger_enabled'  => 'on'
-      }
-      Dir.chdir(CONF['tenants_dir']) do
-        `git clone #{CONF['app_repo']} #{name}`
-      end
-      Nginx::Config.add_location(name, config)
       `#{CONF['nginx_bin']} -s reload`
     end
   end
