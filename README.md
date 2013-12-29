@@ -1,121 +1,95 @@
 #Myrmidon
 
-### THIS README IS COMPLETELY OUT OF DATE. I'LL FIX IT TOMMOROW, NOW I'M GOING TO SLEEP.
-###About
-Myrmidon is a rails application that spawns it's brave minions (rack applications) and runs them with nginx and passanger!  
-Basically, Myrmidon is a software platform for easy building of Content Management Systems (CMS), like Wordpress, Tumblr and company.  
-The main Idea is that if building a CMS is easy, people will create a lot of Domain Specific Content Management Systems. This will give to people the oppurtunity to create websites with tools created exactly for their website's domain. For example, if you want to create a website for video sharing, CMS that is created for making exactly that kind of websites will be a better fit, than just go with Wordpress or whatever else you like.
+##About
+Myrmidon is an application for deploying and managing web applications.
 
 The goals of Myrmidon are:
 
-* easy deploying of rack applications (Myrmidon clones from one "template" application for each "tenant")
-* easy configuration of the deploying process (Myrmidon uses nginx)
-* configuration of the "tenants"
-* managing plugins of the "tenants"
+* easy deploying of web applications written in any language, by making "copies" of one template application. Each new deployed application is called a tenant in the Myrmidon world.
+* configuration of the deploying process (Myrmidon uses nginx).
+* configuration of the tenants.
+* managing plugins of the tenants.
 
 Beware, here be dragons!
 
-* letting users write their own plugins, which are running on our host (unlike Wordpress for example). This will be done using freeBSD jails, and other cool things.
-(at some point of time, Myrmidon may be ported to linux)
+* Giving to users the ability to write their own plugins for their sites, which are running on the Myrmidon host.
 
-For template application can be used every rack application, but if the application follows few "conventions" (like implementing a specific API for configurating the deployed application and API for managing plugins) it will be best. The first template application is being developped by d0ivanov [here](https://github.com/d0ivanov/videatra) and it is a video sharing application.
+Myrmidon is created with the very idea to be used with a CMS (Content Management System) application. Althought this is not a requirement, it will be a really powerful combination. The result of mixing Myrmidon with a CMS application will be something similar to wordpress.com. Every user will be able to create it's own website, configure it and use it without any technical knowledge. And programmers will be able to create plugins for their tenants, without having to download any code, deal with hosting, registering a domain name, etc. If creating and deploying CMSes is so easy, maybe people will end up having many domain specific CMSes, instead of one or two, that deals with everything.
+
+##How it works
+
+Myrmidon is a rails application with some other components, which all together create one system for creating, deploying and managing web applications.
+
+### The Rails application
+The Rails application works as a front end of the Myrmidon system. It gives web interface for user registration, creation of tenants, managing existing tenants and etc. The Rails application is controlling the other parts of the system, so you can think of it, as the core of the system.
+
+### Docker
+
+Myrmidon uses [Docker](http://docker.io) for separating applications in an isolated environment. If you don't know anything about Docker and how it works, you may want to visit their website and read about it - you may find it interesting and it is really the base of how Myrmidon works. Understanding Docker will really help you understanding Myrmidon.
+
+With few words (if you are too lazy to researh it): "Docker is an open-source engine that automates the deployment of any application as a lightweight, portable, self-sufficient container that will run virtually anywhere."
+
+So any web application, written in any language, can be put with all it's dependencies in a docker image and Myrmidon can deploy it.
+
+### Nginx
+
+Myrmidon uses Nginx as it's web server. Request to the Myrmidon's host will be catched by Nginx and routed to either Myrmidon (the rails app) or some of the deployed tenants.
 
 ####WARNING!
-Not really usable for the moment.
-But still, it's *awesome!*
+Myrmidon is in very early state of development and it's not really usable for the moment.
 
-## Install
+##Installation
 
-Myrmidon is currently depending on FreeBSD jails, so for the moment it can only run in FreeBSD. At some point in time, there may be a Linux port.  
-It is being developed on FreeBSD 9.2, so this is the recommended version.  
-The guide is tested on brand new FreeBSD v9.2, so this should be all the dependencies.
-
-(This guide will install packages from source. You can install precompiled binaries for the dependencies, this way it will be faster.)
-
-#####First you will need ezjail:  
+Get Myrmidon:  
 ```console
-cd /usr/ports/sysutils/ezjail  
-make install clean  
+git clone https://github.com/mzdravkov/myrmidon
 ```
 
-#####Install git:  
+Install passenger:  
 ```console
-cd /usr/ports/devel/git  
-make install clean  
+gem install passenger
 ```
 
-#####Install curl:  
+Then run the passenger-nginx installation:  
 ```console
-cd /usr/ports/ftp/curl  
-make install clean  
+passenger-install-nginx-module
 ```
 
-#####Install ruby:  
-```console
-cd /usr/ports/lang/ruby19  
-make install clean  
-```
+When asked where to install nginx, you should (it's recommended) enter ```/myr/nginx```.
 
-#####Install ruby-gems port:  
-```console
-cd /usr/ports/devel/ruby-gems  
-make install clean  
-```
+There is an example ```nginx.conf``` in ```examples/```. Be sure to have those 4 lines from it:
+```passenger_user_switching off;```  
+```passenger_default_user myrmidon;```  
+```passenger_default_group myrmidon;```  
+```passenger_user myrmidon;```
 
-#####Install passenger gem, which we'll then use to install nginx:  
-```console
-gem install passenger  
-```
-#####Create the /myr directory, where everything will be placed:
-It is recommended to build the whole system inside one directory. This way will be easier to maintain it.  
-I like this approach, so it is the default:
-```console
-cd /  
-mkdir /myr  
-```
-And everything for the platform will be kept inside _/myr/_. (for example we will have _/myr/nginx_ and _/myr/jails_)  
+Install Docker: [Instructions here](http://www.docker.io/gettingstarted/#h_installation).
 
-#####Install nginx:  
-```console
-passenger-install-nginx-module  
-```
-You will be greeted with some message and you will have to hit enter, then the installer will ask you what to do:  
-```console
-1. Yes: download, compile and install Nginx for me. (recommended)  
-2. No: I wan to customize my Nginx installation. (for advanced users)  
-```
-Just choose 1 if you are not sure what to do.
+Create a ```docker``` group as shown [here](http://docs.docker.io/en/latest/use/basics/#sudo-and-the-docker-group).
 
-```console
-Where do you want to install Nginx to?
-Please specify a prefix directory [/opt/nginx]: /myr/nginx
-```
-Altought you can decide to put it elsewere, it is recommended to put nginx there.
+Create an user called ```myrmidon``` (if you want to use a different name, make sure to change the name in your nginx.conf) and add him to the ```docker``` group.
 
-## Configuring the platform
 
-#####ezjail:
-Add the following to /etc/rc.conf  
-```text
-ezjail_enable="YES"
-```
+You have to allow your ```myrmidon``` user to be able to run ```sudo``` commands without password.
+On Debian/Ubuntu (and maybe all Linux distributions) you have to add this line to ```/etc/sudoers```:
 
-Then create the ezjail configuration file  
-```console
-cd /usr/local/etc  
-cp ezjail.conf.sample ezjail.conf  
-```
+```myrmidon ALL=NOPASSWD: ALL```
 
-Open the config file (/usr/local/etc/ezjail.conf) and change
-```text
-# ezjail_jaildir=/usr/jails
-```
-to
-```text
-ezjail_jaildir=/myr/jails
-```
-(Note: we uncommented it and changed the path)
+#####WARNING!!! MAKE SURE TO USE VISUDO, OTHERWISE YOU CAN SCREW UP YOUR OS.
 
-```console
-ezjail-admin install
-```
+Make sure all the things Myrmidon will need are not write protected:  
+```sudo chown -R myrmidon:myrmidon /myr```
+
+Note that if you add as ```root``` new files to the ```/myr``` directory after you have changed it's ownership, the new files will still belong to ```root``` so you have to run ```chown``` again or just make new files in ```/myr``` as ```myrmidon```.
+
+
+####If you want to use Myrmidon to configure the tenants
+
+Make ```mkdir /myr/configs``` and ```/myr/tenant_conf.default.yml```. (those like a lot of other things, can be changed in the config/application.yml file) In the second you put the default configuration for your tenants like this:
+
+```name_of_the_configuration:```  
+```__type: int/string/bool```  
+```__category: some_category```  
+```__value: default_value```  
+
+NOTE: __ is two spaces... I just can't make this markdown to indent two spaces!
