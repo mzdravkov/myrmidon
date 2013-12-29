@@ -22,7 +22,8 @@ module DeployStrategies
         "-d",
         "-name #{name}",
         "-p #{port}:#{CONF['tenants_port']}",
-        "-v #{CONF['tenants_configs_dir']}:#{CONF['tenants_config_path']}:ro"
+        "-v #{CONF['tenants_configs_dir']}:#{CONF['tenants_config_path']}:ro",
+        "-v #{File.join(CONF['tenants_plugins_dir'], name)}:#{CONF['tenants_plugins_path']}:ro"
       ]
       docker_run_options += CONF['docker_options'] unless CONF['docker_options'].nil?
       docker_run_options
@@ -45,15 +46,20 @@ module DeployStrategies
       FileUtils.cp CONF['tenants_default_config'], File.join(CONF['tenants_configs_dir'], name + '.yml')
     end
 
+    def self.make_plugins_dir name
+      Dir.mkdir File.join(CONF['tenants_plugins_dir'], name)
+    end
+
     def self.deploy name
       port = find_free_port
       opts = docker_run_options(name, port)
       args = docker_run_arguments
       make_tenant_config name
-      `docker run #{opts.join(' ')} #{args.join(' ')}`
+      make_plugins_dir name
+      Kernel.system "docker run #{opts.join(' ')} #{args.join(' ')}"
       location_options = location_options(port)
       Nginx::Config.add_location name, location_options
-      `sudo #{CONF['nginx_bin']} -s reload`
+      Kernel.system "sudo #{CONF['nginx_bin']} -s reload"
     end
   end
 

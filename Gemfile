@@ -6,6 +6,7 @@ gem 'mysql2'
 #gem 'sqlite3'
 gem 'devise'
 gem 'figaro'
+gem 'paperclip'
 
 group :development do
   gem 'better_errors'

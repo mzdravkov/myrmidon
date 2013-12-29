@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130913135918) do
+ActiveRecord::Schema.define(:version => 20131229122826) do
+
+  create_table "plugins", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.boolean  "public"
+    t.integer  "tenant_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.string   "archive_file_name"
+    t.string   "archive_content_type"
+    t.integer  "archive_file_size"
+    t.datetime "archive_updated_at"
+  end
 
   create_table "tenants", :force => true do |t|
     t.string   "name"

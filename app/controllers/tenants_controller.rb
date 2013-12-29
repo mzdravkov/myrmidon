@@ -6,11 +6,17 @@ class TenantsController < ApplicationController
   end
 
   def create
-    if tenant = Tenant.new(params[:tenant])
-      tenant.save
-      redirect_to root_url, notice: "You have successfully created #{tenant.name}"
-    else
-      redirect_to root_url, alert: "There was an error while trying to create #{tenant.name}"
+    tenant = Tenant.new(params[:tenant])
+    "require sdadasfgaf a"
+    begin
+      if tenant.save
+        redirect_to root_url, notice: "You have successfully created #{tenant.name}"
+      else
+        errors = tenant.errors.messages.map { |k, v| k.to_s+' ' + v.join(' and ')+' ' }
+        redirect_to root_url, alert: "There was an error while trying to create #{tenant.name}. " + errors.join(' ')
+      end
+    rescue
+      redirect_to root_url, alert: "There was an error while trying to create #{tenant.name}. " + errors.join(' ')
     end
   end
 
