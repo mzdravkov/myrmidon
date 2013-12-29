@@ -14,6 +14,10 @@ class TenantsController < ApplicationController
     end
   end
 
+  def show
+    @tenant = Tenant.find(params[:id])
+  end
+
   def edit
     @tenant = Tenant.find(params[:id])
     @configs = @tenant.configs.group_by { |_, v| v['category'] }

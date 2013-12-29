@@ -4,8 +4,8 @@
 <% else %>
   <%= link_to 'Create new website!', new_tenant_path %>
   <%= link_to 'Sign out', destroy_user_session_path, method: :delete if current_user %>
-<% end %>
-<br/>
-<% current_user.tenants.each do |tenant| %>
-  <%= link_to tenant.name, edit_tenant_path(tenant) %> <br/>
+  <br/>
+  <% current_user.tenants.each do |tenant| %>
+    <%= link_to tenant.name, tenant_path(tenant) %> <br/>
+  <% end %>
 <% end %>
