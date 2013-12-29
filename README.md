@@ -87,9 +87,11 @@ Note that if you add as ```root``` new files to the ```/myr``` directory after y
 
 Make ```mkdir /myr/configs``` and ```/myr/tenant_conf.default.yml```. (those like a lot of other things, can be changed in the config/application.yml file) In the second you put the default configuration for your tenants like this:
 
-```name_of_the_configuration:```  
-```__type: int/string/bool```  
-```__category: some_category```  
-```__value: default_value```  
+```console
+name_of_the_configuration:  
+__type: int/string/bool  
+__category: some_category  
+__value: default_value
+```
 
 NOTE: __ is two spaces... I just can't make this markdown to indent two spaces!
