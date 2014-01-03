@@ -1,2 +1,3 @@
 <h1><%= @tenant.name %></h1>
 <%= link_to 'Change configurations', edit_tenant_path(@tenant) %>
+<%= button_to 'Stop tenant', action: :stop %>

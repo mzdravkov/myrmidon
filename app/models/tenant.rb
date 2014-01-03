@@ -10,7 +10,7 @@ class Tenant < ActiveRecord::Base
   after_create :create_project
 
   def create_project
-    unless Kernel.system("ruby -e \"require './lib/deploy.rb'; DeployStrategies::Docker.deploy '#{name}'\"")
+    unless Kernel.system("#{ENV['kamino_bin']} deploy -name='#{name}'")
       throw 'Error creating tenant'
     end
   end

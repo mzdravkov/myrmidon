@@ -41,4 +41,8 @@ class TenantsController < ApplicationController
     end
     redirect_to root_url, notice: 'You have successfully updated you configurations!'
   end
+
+  def stop
+    redirect_to root_url, notice: 'Tenant stoped'
+  end
 end
