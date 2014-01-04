@@ -1,0 +1,6 @@
+- if current_user
+  = link_to 'Create new website!', new_tenant_path
+  %br
+  - current_user.tenants.each do |tenant|
+    = link_to tenant.name, tenant_path(tenant)
+    %br

@@ -14,3 +14,10 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+/config/database.yml
+*.swp
+*.orig
+
+# Ignore application configuration
+/config/application.yml

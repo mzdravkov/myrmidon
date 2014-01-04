@@ -1,0 +1,6 @@
+%h1= @tenant.name
+= link_to 'Change configurations', edit_tenant_path(@tenant)
+- if @tenant.working?
+  = button_to 'Stop tenant', action: :stop
+- else
+  = button_to 'Start tenant', action: :start
