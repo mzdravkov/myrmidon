@@ -10,4 +10,107 @@
  *
  *= require_self
  *= require_tree .
+ *= require bootstrap_and_overrides
  */
+
+body {
+  /*background: url("/assets/notebook_texture.jpg");
+  //background-size: 40%;*/
+  /*background-image: url(images/radial_bg.png);*/
+  background-position: center center;
+  background-repeat: no-repeat;
+  /* Safari 4-5, Chrome 1-9 */ /* Can't specify a percentage size? Laaaaaame. */
+  background: -webkit-gradient(radial, center center, 0, center center, 460, from(#00CED1), to(#009ACD));
+  /* Safari 5.1+, Chrome 10+ */ background: -webkit-radial-gradient(circle, #00CED1, #009ACD);
+  /* Firefox 3.6+ */ background: -moz-radial-gradient(circle, #00CED1, #009ACD);
+  /* IE 10 */ background: -ms-radial-gradient(circle, #00CED1, #009ACD);
+}
+
+.content {
+  /*background: rgba(255,255,255, 0.7);*/
+  margin-top: 70px;
+}
+
+.span3 .top {
+  background: #660198;
+  /*transform: skewY(4deg);*/
+  transform: rotate(4deg) translateX(-10px);
+  /*border: 1px solid black;*/
+  padding: 13px;
+  border-radius: 7px;
+  color: #fff;
+}
+
+.span3 .top a {
+  color: #00CED1;
+}
+
+.span3 .top a:hover {
+  color: #FF6600;
+  text-decoration: none;
+}
+
+.span3 .bottom {
+  margin-top: 40px;
+  background: #660198;
+  /*transform: skewY(4deg);*/
+  /*border: 1px solid black;*/
+  padding: 13px;
+  border-radius: 7px;
+  color: #fff;
+}
+
+.span3 .bottom a {
+  color: #00CED1;
+}
+
+.span3 .bottom a:hover {
+  color: #FF6600;
+  text-decoration: none;
+}
+
+.row-fluid .span8 {
+  min-height: 480px;
+  background: #F0F0F0;
+  border-radius: 7px;
+  padding: 20px;
+  -webkit-box-shadow: 0 0 40px white;
+  -moz-box-shadow: 0 0 40px white;
+  box-shadow: 0 0 40px white;
+}
+
+.logo {
+  transform: skewY(-3deg);
+  margin-bottom: 80px;
+}
+
+.logo a {
+  color: #FF6600;
+}
+
+.logo a:hover {
+  text-decoration: none;
+  color: #FF6600;
+}
+
+/*Apply this class to some text to unlock the secrets of the third dimension!*/
+.Three-Dee{
+  font-family: Garamond, serif;
+  line-height: 1em;
+  color: #ff6600;
+  font-weight:bold;
+  font-style:italic;
+  font-size: 80px;
+  text-shadow:0px 0px 0 rgb(231,78,-24),1px 1px 0 rgb(216,63,-39),2px 2px 0 rgb(202,49,-53),3px 3px 0 rgb(187,34,-68),4px 4px 0 rgb(173,20,-82),5px 5px 0 rgb(158,5,-97), 6px 6px 0 rgb(144,-9,-111),7px 7px 6px rgba(0,0,0,1),7px 7px 1px rgba(0,0,0,0.5),0px 0px 6px rgba(0,0,0,.2);
+}
+
+.sideform {
+  transform: rotate(-4deg);
+}
+
+footer {
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}

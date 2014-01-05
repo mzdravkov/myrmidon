@@ -1,11 +1,13 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  tenant_id: 1
   name: MyString
   description: MyText
-  public: 
+  public: false
 
 two:
+  tenant_id: 1
   name: MyString
   description: MyText
-  public: 
+  public: false
