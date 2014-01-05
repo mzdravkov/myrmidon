@@ -1,6 +1,26 @@
-- if current_user
-  = link_to 'Create new website!', new_tenant_path
-  %br
-  - current_user.tenants.each do |tenant|
-    = link_to tenant.name, tenant_path(tenant)
-    %br
+// .hero-unit
+//   %h1 Video sharing made easy!
+//   %p
+//     Myrmidon lets you create you personal video sharing website, in the matter of minutes.
+
+.carousel.slide#carousel-home
+  .carousel-inner
+    .item.active
+      %img{src: '/assets/1.jpg'}
+      .carousel-caption
+        %h4
+          Cool and stylish
+    .item
+      %img{src: '/assets/1.jpg'}
+      .carousel-caption
+        %h4
+          Surprisingly easy to use
+    .item
+      %img{src: '/assets/1.jpg'}
+      .carousel-caption
+        %h4
+          And really funny
+  %a.carousel-control.right{:href=>"#carousel-home", :"data-slide"=>"next"}
+    %span.glyphicon.glyphicon-arrow-right
+  %a.carousel-control.left{:href=>"#carousel-home", :"data-slide"=>"prev"}
+    %span.glyphicon.glyphicon-arrow-left

@@ -4,7 +4,7 @@
     %meta{charset: "utf-8"}/
     %meta{content: "IE=Edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
-    %title= content_for?(:title) ? yield(:title) : "Myrmidon"
+    %title= content_for?(:title) ? yield(:title) : "Guacamole"
     = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
@@ -27,37 +27,37 @@
     = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
     = javascript_include_tag "application"
   %body
-    .navbar.navbar-fluid-top
-      .navbar-inner
-        .container-fluid
-          %a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          %a.brand{href: "/"} Myrmidon
-          .container-fluid.nav-collapse
-            %ul.nav
-              - if user_signed_in?
-                %li= link_to "Sign out", destroy_user_session_path, method: :delete
-              - else
-                %li= link_to "Sign in", new_user_session_path
-                %li= link_to "Register", new_user_registration_path
-
-          / /.nav-collapse
+    .row-fluid
+      .top-space
     .container-fluid
       .row-fluid
-        .span3
-          .well.sidebar-nav
-            %ul.nav.nav-list
-              %li.nav-header Sidebar
-              %li= link_to "Link1", "/path1"
-              %li= link_to "Link2", "/path2"
-              %li= link_to "Link3", "/path3"
-          / /.well
         / /span
-        .span9
-          = bootstrap_flash
-          = yield
+        .span1
+        .span10
+          .content
+            .span8
+              .logo.Three-Dee
+                = link_to 'Guacamole', root_url
+              = bootstrap_flash
+              = yield
+            .span3
+              .top
+                - if user_signed_in?
+                  Hello,
+                  %br
+                  %h4= current_user.email
+                  %br
+                  = link_to 'Sign out', destroy_user_session_path, method: :delete
+                - else
+                  = render 'users/new'
+              - if user_signed_in?
+                .bottom
+                  %h3 Your websites
+                  = button_to 'Create new', new_tenant_path, class: 'btn btn-primary', style: 'background: #ff6600;', method: :get
+                  %br
+                  - current_user.tenants.each do |t|
+                    = link_to t.name, tenant_path(t)
+        .span1
       / /row
       %footer
         %p © Company 2014

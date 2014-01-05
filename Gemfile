@@ -15,6 +15,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'devise'
 gem 'haml-rails'
 gem 'figaro'
+gem 'paperclip'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

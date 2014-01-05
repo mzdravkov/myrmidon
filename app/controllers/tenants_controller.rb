@@ -24,20 +24,20 @@ class TenantsController < ApplicationController
 
   def edit
     @tenant = Tenant.find(params[:id])
-    #@configs = @tenant.configs.group_by { |_, v| v['category'] }
+    @configs = @tenant.configs.group_by { |_, v| v['category'] }
   end
 
   def update
-    #tenant = Tenant.find(params[:id])
-    #changes = params.select { |k, _| k =~ /^config_.+/ }
-    #changes = Hash[changes.map { |k, v| [k.to_s.sub(/^config_/, ''), v] }]
-    #begin
-    #  tenant.update_configs changes
-    #rescue
-    #  redirect_to root_url, notice: 'There was an error while trying to save your configurations to file.'
-    #  return
-    #end
-    #redirect_to root_url, notice: 'You have successfully updated you configurations!'
+    tenant = Tenant.find(params[:id])
+    changes = params.select { |k, _| k =~ /^config_.+/ }
+    changes = Hash[changes.map { |k, v| [k.to_s.sub(/^config_/, ''), v] }]
+    begin
+      tenant.update_configs changes
+    rescue
+      redirect_to root_url, notice: 'There was an error while trying to save your configurations to file.'
+      return
+    end
+    redirect_to root_url, notice: 'You have successfully updated you configurations!'
   end
 
   def start
@@ -45,7 +45,7 @@ class TenantsController < ApplicationController
       Tenant.find(params[:id]).start
       redirect_to root_url, notice: 'Tenant started'
     rescue
-      redirect_to root_url, notice: 'Error: couldn\'t start tenant'
+      redirect_to root_url, alert: 'Error: couldn\'t start tenant'
     end
   end
 
@@ -54,7 +54,7 @@ class TenantsController < ApplicationController
       Tenant.find(params[:id]).stop
       redirect_to root_url, notice: 'Tenant stoped'
     rescue
-      redirect_to root_url, notice: 'Error: couldn\'t stop tenant'
+      redirect_to root_url, alert: 'Error: couldn\'t stop tenant'
     end
   end
 
