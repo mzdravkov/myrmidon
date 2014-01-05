@@ -3,11 +3,12 @@ class Plugin < ActiveRecord::Base
 
   validates :name, presence: true, format: {with: /\A[a-z_A-Z]+\z/, message: 'Only letters, underscore and numbers allowed.'}
   validates :description, presence: true
+
+  has_attached_file :archive, path: File.join(ENV['tenants_plugins_dir'], ':plugin_tenant_name', ':filename')
+
   validates_attachment :archive, :presence => true,
   :content_type => { :content_type => "application/x-gzip" },
   :size => { :in => 0..10.megabytes }
-
-  has_attached_file :archive, path: File.join(ENV['tenants_plugins_dir'], ':plugin_tenant_name', ':filename')
 
   def extract
     Dir.chdir File.join(ENV['tenants_plugins_dir'], tenant.name) do

@@ -34,7 +34,7 @@ class TenantsController < ApplicationController
     begin
       tenant.update_configs changes
     rescue
-      redirect_to root_url, notice: 'There was an error while trying to save your configurations to file.'
+      redirect_to root_url, alert: 'There was an error while trying to save your configurations to file.'
       return
     end
     redirect_to root_url, notice: 'You have successfully updated you configurations!'
