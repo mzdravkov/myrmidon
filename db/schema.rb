@@ -14,10 +14,10 @@
 ActiveRecord::Schema.define(version: 20140104171053) do
 
   create_table "plugins", force: true do |t|
-    t.integer  "tenant_id"
     t.string   "name"
     t.text     "description"
     t.boolean  "public"
+    t.integer  "tenant_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "activated"
