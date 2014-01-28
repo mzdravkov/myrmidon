@@ -16,6 +16,7 @@ gem 'devise'
 gem 'haml-rails'
 gem 'figaro'
 gem 'paperclip'
+gem 'plugman'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

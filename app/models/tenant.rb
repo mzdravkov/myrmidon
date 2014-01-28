@@ -24,24 +24,28 @@ class Tenant < ActiveRecord::Base
     File.open file, 'w' do |f|
       f.print conf.to_yaml
     end
+    PLUGINS.notify :on_update_configs, self
   end
 
   def deploy
-    unless Kernel.system("cd #{kamino_dir}; #{ENV['kamino_bin']} deploy -name='#{name}'")
+    unless Kernel.system("#{ENV['kamino_bin']} deploy -name='#{name}'")
       throw 'Error creating tenant'
     end
+    PLUGINS.notify :on_deploy, self
   end
 
   def stop
     unless Kernel.system("docker stop #{name}")
       throw 'Error stoping tenant'
     end
+    PLUGINS.notify :on_stop, self
   end
 
   def start
     unless Kernel.system("docker start #{name}")
       throw 'Error starting tenant'
     end
+    PLUGINS.notify :on_start, self
   end
 
   def working?

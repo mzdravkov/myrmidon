@@ -57,6 +57,7 @@
                   %br
                   - current_user.tenants.each do |t|
                     = link_to t.name, tenant_path(t)
+                    %br
         .span1
       / /row
       %footer

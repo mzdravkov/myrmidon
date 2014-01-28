@@ -35,6 +35,7 @@ body {
   background: #660198;
   /*transform: skewY(4deg);*/
   transform: rotate(4deg) translateX(-10px);
+  -webkit-transform: rotate(4deg) translateX(-10px);
   /*border: 1px solid black;*/
   padding: 13px;
   border-radius: 7px;
@@ -81,6 +82,7 @@ body {
 
 .logo {
   transform: skewY(-3deg);
+  -webkit-transform: skewY(-3deg);
   margin-bottom: 80px;
 }
 
@@ -106,6 +108,7 @@ body {
 
 .sideform {
   transform: rotate(-4deg);
+  -webkit-transform: rotate(-4deg);
 }
 
 footer {

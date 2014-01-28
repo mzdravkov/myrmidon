@@ -6,6 +6,13 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
+log     = StringIO.new("")
+# loads event plugins (the lambda has arg because plugman needs it for loggin)
+loader  = ->(a) { Dir.glob('./event_plugins/*.rb').each {|f| require f} }
+# define plugins constant
+PLUGINS = Plugman.new(loader: loader, logger: Logger.new(log))
+PLUGINS.load_plugins
+
 module Myrmidon
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
