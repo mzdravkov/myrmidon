@@ -1,5 +1,7 @@
 #Myrmidon
 
+##DEPRECATED!!! USE https://github.com/mzdravkov/beyond instead.
+
 ##About
 Myrmidon is an application for deploying and managing web applications.
 
